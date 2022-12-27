@@ -27,6 +27,6 @@ public class Job {
     @Column
     Date endDate;
 
-    // @OneToOne(mappedBy = "temp")
-    // List<Temp> temps;
+    @OneToOne(mappedBy = "temp")
+    List<Temp> temps;
 }
