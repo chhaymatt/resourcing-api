@@ -15,4 +15,12 @@ public class JobCreateDTO {
     Date endDate;
 
     Long temp;
+
+    public JobCreateDTO(String name, Date startDate, Date endDate, Long temp) {
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.temp = temp;
+    }
+
 }
