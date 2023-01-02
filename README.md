@@ -6,6 +6,7 @@
 4. Run src/main/java/com/matthewchhay/resourcingapi/ResourcingApiApplication.java
 
 
-# Issues during development
-Replace @SpringBootApplication with
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class })
+# Issues
+- Unable to GET all jobs
+- Unable to GET job by id
+- 

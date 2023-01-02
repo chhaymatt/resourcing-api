@@ -11,7 +11,7 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class JobService {
-    // @Autowired // shows an error when uncommented
+    @Autowired
     private JobRepository repository;
 
     public String hello() {

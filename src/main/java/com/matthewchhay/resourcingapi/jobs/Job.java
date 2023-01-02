@@ -1,36 +1,36 @@
 package com.matthewchhay.resourcingapi.jobs;
 
 import java.sql.Date;
-import java.util.List;
+//import java.util.List;
 
-import com.matthewchhay.resourcingapi.temps.Temp;
+//import com.matthewchhay.resourcingapi.temps.Temp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+//import jakarta.persistence.OneToOne;
 
 @Entity
 public class Job {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    Long id;
 
     @Column
-    private String name;
+    String name;
 
     @Column
-    private Date startDate;
+    Date startDate;
 
     @Column
-    private Date endDate;
+    Date endDate;
 
     // @OneToOne(mappedBy = "temp")
     // List<Temp> temps;
     @Column
-    private Long temp;
+    Long temp;
 
     public Job() {
     }
