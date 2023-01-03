@@ -8,10 +8,8 @@ public class JobCreateDTO {
     @NotBlank
     String name;
 
-    @NotBlank
     Date startDate;
 
-    @NotBlank
     Date endDate;
 
     Long temp;
