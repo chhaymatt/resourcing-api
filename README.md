@@ -6,12 +6,27 @@
 4. Run src/main/java/com/matthewchhay/resourcingapi/ResourcingApiApplication.java
 5. In Postman, GET localhost:9876/jobs/test and see if it returns hello world
 
-
 # Issues
-- Unable to GET all jobs
-- Unable to GET job by id
 
-To do:
-- Fix job domain
-- Fix temp domain
-- Create relationship between temps and jobs
+-   Unable to GET all jobs
+-   Unable to GET job by id
+
+# To do:
+
+-   Fix job domain
+-   Fix temp domain
+-   Create relationship between temps and jobs
+
+# Endpoints
+
+## Jobs
+
+| Method | URL                            | Action                                                                   | Created? | E2E Test? |
+| ------ | ------------------------------ | ------------------------------------------------------------------------ | -------- | --------- |
+| GET    | jobs                           | Fetch all jobs                                                           |          |           |
+| GET    | jobs/`{id}`                    | Fetch job by `{id}`                                                      |          |           |
+| GET    | /jobs?assigned=`{true\|false}` | Filter jobs by whether a job is assigned to a temp (true) or not (false) |          |           |
+| POST   | jobs                           | Create new job                                                           |          |           |
+| PATCH  | jobs/ `{id}`                   | Update job by `{id}`, e.g. assigning a temp to a job                     |          |           |
+| DELETE | jobs/`{id}`                    | Delete job by `{id}`                                                     |          |           |
+| DELETE | jobs                           | Delete all jobs                                                          |          |           |
