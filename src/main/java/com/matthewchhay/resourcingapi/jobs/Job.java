@@ -16,21 +16,21 @@ import jakarta.persistence.Id;
 public class Job {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id;
+    private Long id;
 
     @Column
-    String name;
+    private String name;
 
     @Column
-    Date startDate;
+    private Date startDate;
 
     @Column
-    Date endDate;
+    private Date endDate;
 
     // @OneToOne(mappedBy = "temp")
     // List<Temp> temps;
     @Column
-    Long temp;
+    private Long temp;
 
     public Job() {
     }

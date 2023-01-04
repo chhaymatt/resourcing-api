@@ -16,12 +16,31 @@
 
 ## Jobs
 
-| Method | URL                            | Action                                                    | Created & works on Postman? | E2E Test? |
-| ------ | ------------------------------ | --------------------------------------------------------- | --------------------------- | --------- |
-| GET    | jobs                           | Fetch all jobs                                            | Not working in Postman 404  |           |
-| GET    | jobs/`{id}`                    | Fetch job by `{id}`                                       | ✅                          |           |
-| GET    | /jobs?assigned=`{true\|false}` | Filter jobs by whether a job is assigned to a temp or not |                             |           |
-| POST   | jobs                           | Create new job                                            | Not working in Postman 404  |           |
-| PATCH  | jobs/ `{id}`                   | Update job by `{id}`, e.g. assigning a temp to a job      |                             |           |
-| DELETE | jobs/`{id}`                    | Delete job by `{id}`                                      |                             |           |
-| DELETE | jobs                           | Delete all jobs                                           |                             |           |
+| Method | URL                           | Action                                                    | Created & works on Postman? | E2E Test? | Payload Example |
+| ------ | ----------------------------- | --------------------------------------------------------- | --------------------------- | --------- | --------------- |
+| GET    | jobs                          | Fetch all jobs                                            | ✅                          |           |                 |
+| GET    | jobs/`{id}`                   | Fetch job by `{id}`                                       | ✅                          |           |                 |
+| GET    | jobs?assigned=`{true\|false}` | Filter jobs by whether a job is assigned to a temp or not |                             |           |                 |
+| POST   | jobs                          | Create new job                                            | ✅                          |           |                 |
+| PATCH  | jobs/ `{id}`                  | Update job by `{id}`, e.g. assigning a temp to a job      |                             |           |                 |
+| DELETE | jobs/`{id}`                   | Delete job by `{id}`                                      |                             |           |                 |
+| DELETE | jobs                          | Delete all jobs                                           |                             |           |                 |
+
+### Payload for creating a new job - POST /jobs
+
+```
+{
+    "name": "Job name goes here",
+    "startDate": "2023-01-01",
+    "endDate": "2023-01-04",
+    "temp": 1
+}
+```
+
+```
+{
+    "name": "Job name goes here",
+    "startDate": "2023-01-01",
+    "endDate": "2023-01-04",
+}
+```

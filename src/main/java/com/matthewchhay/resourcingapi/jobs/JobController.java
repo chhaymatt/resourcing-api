@@ -7,12 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.validation.Valid;
 
@@ -36,19 +36,20 @@ public class JobController {
     @GetMapping("/{id}")
     public ResponseEntity<Job> findOneJob(@PathVariable Long id) {
         Optional<Job> maybeJob = this.service.findOne(id);
-
-        if (maybeJob.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no job");
-        }
-
         return new ResponseEntity<>(maybeJob.get(), HttpStatus.OK);
-
     }
 
     @PostMapping
-    public ResponseEntity<Job> create(@Valid @RequestBody JobCreateDTO data) {
+    public ResponseEntity<Job> createJob(@Valid @RequestBody JobCreateDTO data) {
         Job createdJob = this.service.create(data);
         return new ResponseEntity<>(createdJob, HttpStatus.CREATED);
+    }
+
+    @PatchMapping("/jobs/{id}")
+    public ResponseEntity<Job> updateJob(@PathVariable Long id,
+            @Valid @RequestBody JobUpdateDTO data) {
+        Job updatedJob = this.service.update(id, data);
+        return ResponseEntity.ok(updatedJob);
     }
 
 }
