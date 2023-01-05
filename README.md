@@ -6,6 +6,9 @@
 4. Run src/main/java/com/matthewchhay/resourcingapi/ResourcingApiApplication.java
 5. In Postman, GET localhost:9876/jobs/test and see if it returns hello world
 
+# Current roadblock:
+- PATCH a job, says it is not supported
+
 # To do:
 
 -   Fix job domain
