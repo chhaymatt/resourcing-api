@@ -6,9 +6,6 @@
 4. Run src/main/java/com/matthewchhay/resourcingapi/ResourcingApiApplication.java
 5. In Postman, GET localhost:9876/jobs/test and see if it returns hello world
 
-# Current roadblock:
-- PATCH a job, says it is not supported
-
 # To do:
 
 -   Fix job domain
@@ -47,3 +44,25 @@
     "endDate": "2023-01-04",
 }
 ```
+
+# Roadblocks in my development
+
+## Problem 1 - PATCH is not supported
+
+Unable to patch a job and console logs/Postman says the method is not supported.
+
+### Symptom
+
+```
+    "message": "Method 'PATCH' is not supported.",
+    "status": 405,
+    "error": "Method Not Allowed"
+```
+
+### How did I solve it?
+
+1. Confirmed the job exists by GET /jobs/1
+2. Searched online and found out how to enable debug in application.properties `logging.level.org.springframework.web=DEBUG`
+3. Saw a post online and someone mentioned about them not passing in the {id}
+4. Rechecked the JobController and realised I doubled up on the URL, it was going to `/jobs/jobs/1` instead of `/jobs/1`
+5. Removed additional /jobs in the @PatchMapping

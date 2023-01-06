@@ -63,6 +63,8 @@ public class JobService {
             job.setTemp(data.temp);
         }
 
-        return this.repository.save(job);
+        this.repository.save(job);
+
+        return job;
     }
 }
