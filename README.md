@@ -8,24 +8,24 @@
 
 ## Table of Contents <!-- omit in toc -->
 
--   [Introduction](#introduction)
--   [Features (not 100% done)](#features-not-100-done)
--   [Technologies Used](#technologies-used)
--   [Tools Used](#tools-used)
--   [Project Status](#project-status)
--   [Screenshots](#screenshots)
--   [MVP](#mvp)
-    -   [Jobs](#jobs)
-    -   [Temps](#temps)
-    -   [Payloads](#payloads)
-    -   [Assumptions](#assumptions)
--   [Going beyond the MVP](#going-beyond-the-mvp)
--   [Setup](#setup)
--   [Requirements](#requirements)
--   [For launching locally and further development](#for-launching-locally-and-further-development)
--   [Issues discovered during development](#issues-discovered-during-development)
-    -   [Problem 1 - PATCH is not supported](#problem-1---patch-is-not-supported)
--   [Room for Improvement](#room-for-improvement)
+- [Introduction](#introduction)
+- [Features (not 100% done)](#features-not-100-done)
+- [Technologies Used](#technologies-used)
+- [Tools Used](#tools-used)
+- [Project Status](#project-status)
+- [Screenshots](#screenshots)
+- [MVP](#mvp)
+	- [Jobs](#jobs)
+	- [Temps](#temps)
+	- [Payloads](#payloads)
+	- [Assumptions](#assumptions)
+- [Going beyond the MVP](#going-beyond-the-mvp)
+- [Setup](#setup)
+- [Requirements](#requirements)
+- [For launching locally and further development](#for-launching-locally-and-further-development)
+- [Issues discovered during development](#issues-discovered-during-development)
+	- [Problem 1 - PATCH is not supported](#problem-1---patch-is-not-supported)
+- [Room for Improvement](#room-for-improvement)
 
 ## Introduction
 
@@ -165,7 +165,7 @@ Unable to patch a job and console logs/Postman state the method is not supported
 **How did I solve it?**
 
 1. Confirmed the job exists by `GET /jobs/1`
-2. Searched online and discovered how to enable debug in application.properties `logging.level.org.springframework.web=DEBUG`
+2. Searched online and discovered how to enable debug in application.properties `logging.level.root=DEBUG`
 3. Saw a post online and someone mentioned about them not passing in the {id}
 4. Checked the JobController and realised I doubled up on the URL, it was going to `/jobs/jobs/1` instead of `/jobs/1`
 5. Removed additional `/jobs` in the `@PatchMapping`

@@ -6,9 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-
-import jakarta.transaction.Transactional;
 
 @Service
 @Transactional
@@ -43,28 +42,47 @@ public class JobService {
     }
 
     public Job update(Long jobId, JobUpdateDTO data) {
-        // Finds existing job based on findOne method above
-        Job job = this.findOne(jobId).get();
+        // Job job = this.findOne(jobId).get();
+        Optional<Job> existingJob = repository.findById(jobId);
 
-        if (data.name != null) {
-            String cleanedName = data.name.trim();
-            job.setName(cleanedName);
+        if (existingJob.isPresent()) {
+            Job job = existingJob.get();
+
+            if (data.name != null) {
+                String cleanedName = data.name.trim();
+                job.setName(cleanedName);
+            }
+
+            if (data.startDate != null) {
+                job.setStartDate(data.startDate);
+            }
+
+            if (data.endDate != null) {
+                job.setEndDate(data.endDate);
+            }
+
+            if (data.temp != null) {
+                job.setTemp(data.temp);
+            }
+
+            return this.repository.save(job);
         }
+        return null;
 
-        if (data.startDate != null) {
-            job.setStartDate(data.startDate);
-        }
-
-        if (data.endDate != null) {
-            job.setEndDate(data.endDate);
-        }
-
-        if (data.temp != null) {
-            job.setTemp(data.temp);
-        }
-
-        this.repository.save(job);
-
-        return job;
     }
+
+    // public Job update(Long jobId, JobUpdateDTO data) {
+    // Optional<Job> existingJob = repository.findById(jobId);
+
+    // if (existingJob.isPresent()) {
+    // data.forEach((key, value) -> {
+    // Field field = ReflectionUtils.findField(Job.class, key);
+    // field.setAccessible(true);
+    // ReflectionUtils.setField(field, existingJob.get(), value);
+    // });
+    // return repository.save(existingJob.get());
+    // }
+    // return null;
+    // }
+
 }

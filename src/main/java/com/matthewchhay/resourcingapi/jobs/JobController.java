@@ -45,7 +45,7 @@ public class JobController {
         return new ResponseEntity<>(createdJob, HttpStatus.CREATED);
     }
 
-    @PatchMapping("/jobs/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<Job> updateJob(@PathVariable Long id,
             @Valid @RequestBody JobUpdateDTO data) {
         Job updatedJob = this.service.update(id, data);
