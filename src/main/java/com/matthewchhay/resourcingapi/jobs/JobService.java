@@ -33,56 +33,32 @@ public class JobService {
 
     public Job create(JobCreateDTO data) {
         String cleanedName = data.name.trim();
-
         Job newJob = new Job(cleanedName, data.startDate, data.endDate, data.temp);
-
-        this.repository.save(newJob);
-
-        return newJob;
+        return this.repository.save(newJob);
     }
 
     public Job update(Long jobId, JobUpdateDTO data) {
-        // Job job = this.findOne(jobId).get();
-        Optional<Job> existingJob = repository.findById(jobId);
+        Job job = this.findOne(jobId).get();
 
-        if (existingJob.isPresent()) {
-            Job job = existingJob.get();
-
-            if (data.name != null) {
-                String cleanedName = data.name.trim();
-                job.setName(cleanedName);
-            }
-
-            if (data.startDate != null) {
-                job.setStartDate(data.startDate);
-            }
-
-            if (data.endDate != null) {
-                job.setEndDate(data.endDate);
-            }
-
-            if (data.temp != null) {
-                job.setTemp(data.temp);
-            }
-
-            return this.repository.save(job);
+        if (data.name != null) {
+            String cleanedName = data.name.trim();
+            job.setName(cleanedName);
         }
-        return null;
+
+        if (data.startDate != null) {
+            job.setStartDate(data.startDate);
+        }
+
+        if (data.endDate != null) {
+            job.setEndDate(data.endDate);
+        }
+
+        if (data.temp != null) {
+            job.setTemp(data.temp);
+        }
+
+        return this.repository.save(job);
 
     }
-
-    // public Job update(Long jobId, JobUpdateDTO data) {
-    // Optional<Job> existingJob = repository.findById(jobId);
-
-    // if (existingJob.isPresent()) {
-    // data.forEach((key, value) -> {
-    // Field field = ReflectionUtils.findField(Job.class, key);
-    // field.setAccessible(true);
-    // ReflectionUtils.setField(field, existingJob.get(), value);
-    // });
-    // return repository.save(existingJob.get());
-    // }
-    // return null;
-    // }
 
 }

@@ -1,7 +1,6 @@
 package com.matthewchhay.resourcingapi.jobs;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,8 +34,8 @@ public class JobController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Job> findOneJob(@PathVariable Long id) {
-        Optional<Job> maybeJob = this.service.findOne(id);
-        return new ResponseEntity<>(maybeJob.get(), HttpStatus.OK);
+        Job foundJob = this.service.findOne(id).get();
+        return new ResponseEntity<>(foundJob, HttpStatus.OK);
     }
 
     @PostMapping
