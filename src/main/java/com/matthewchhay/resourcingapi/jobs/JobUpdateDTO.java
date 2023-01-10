@@ -9,4 +9,10 @@ public class JobUpdateDTO {
     Date endDate;
     Long temp;
 
+    public JobUpdateDTO(String name, Date startDate, Date endDate, Long temp) {
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.temp = temp;
+    }
 }

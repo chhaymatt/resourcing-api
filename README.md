@@ -8,24 +8,25 @@
 
 ## Table of Contents <!-- omit in toc -->
 
-- [Introduction](#introduction)
-- [Features (not 100% done)](#features-not-100-done)
-- [Technologies Used](#technologies-used)
-- [Tools Used](#tools-used)
-- [Project Status](#project-status)
-- [Screenshots](#screenshots)
-- [MVP](#mvp)
-	- [Jobs](#jobs)
-	- [Temps](#temps)
-	- [Payloads](#payloads)
-	- [Assumptions](#assumptions)
-- [Going beyond the MVP](#going-beyond-the-mvp)
-- [Setup](#setup)
-- [Requirements](#requirements)
-- [For launching locally and further development](#for-launching-locally-and-further-development)
-- [Issues discovered during development](#issues-discovered-during-development)
-	- [Problem 1 - PATCH is not supported](#problem-1---patch-is-not-supported)
-- [Room for Improvement](#room-for-improvement)
+-   [Introduction](#introduction)
+-   [Features (not 100% done)](#features-not-100-done)
+-   [Technologies Used](#technologies-used)
+-   [Tools Used](#tools-used)
+-   [Project Status](#project-status)
+-   [Screenshots](#screenshots)
+-   [MVP](#mvp)
+    -   [Jobs](#jobs)
+    -   [Temps](#temps)
+    -   [Payloads](#payloads)
+    -   [Assumptions](#assumptions)
+-   [Going beyond the MVP](#going-beyond-the-mvp)
+-   [Setup](#setup)
+-   [Requirements](#requirements)
+-   [For launching locally and further development](#for-launching-locally-and-further-development)
+-   [Issues discovered during development](#issues-discovered-during-development)
+    -   [Problem 1 - PATCH is not supported](#problem-1---patch-is-not-supported)
+    -   [Problem 2 - PATCH is not updating](#problem-2---patch-is-not-updating)
+-   [Room for Improvement](#room-for-improvement)
 
 ## Introduction
 
@@ -75,7 +76,7 @@ Project is ongoing
 | GET    | jobs/`{id}`                   | Fetch job by `{id}`                                       | ✅                          |           |
 | GET    | jobs?assigned=`{true\|false}` | Filter jobs by whether a job is assigned to a temp or not |                             |           |
 | POST   | jobs                          | Create new job                                            | ✅                          |           |
-| PATCH  | jobs/ `{id}`                  | Update job by `{id}`, e.g. assigning a temp to a job      |                             |           |
+| PATCH  | jobs/ `{id}`                  | Update job by `{id}`, e.g. assigning a temp to a job      | ✅                          |           |
 
 ### Temps
 
@@ -154,21 +155,23 @@ Project is ongoing
 
 Unable to patch a job and console logs/Postman state the method is not supported.
 
-**Symptom**
-
-```
-    "message": "Method 'PATCH' is not supported.",
-    "status": 405,
-    "error": "Method Not Allowed"
-```
-
 **How did I solve it?**
 
 1. Confirmed the job exists by `GET /jobs/1`
 2. Searched online and discovered how to enable debug in application.properties `logging.level.root=DEBUG`
 3. Saw a post online and someone mentioned about them not passing in the {id}
 4. Checked the JobController and realised I doubled up on the URL, it was going to `/jobs/jobs/1` instead of `/jobs/1`
-5. Removed additional `/jobs` in the `@PatchMapping`
+5. Removed additional `/jobs` in the `@PatchMapping` and error no longer appears
+
+### Problem 2 - PATCH is not updating
+
+-   Patching a job returns the original job instead of the patched payload
+
+**How did I solve it?**
+
+1. Enabled debug mode, noticed JobUpdateDTO and compared file with JobCreateDTO
+2. Realised missing JobUpdateDTO constructor
+3. Added JobUpdateDTO constructor and it is working, considering combining both DTOs into one file
 
 ## Room for Improvement
 
