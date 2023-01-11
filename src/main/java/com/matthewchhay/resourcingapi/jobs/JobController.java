@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
@@ -27,8 +28,8 @@ public class JobController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Job>> getAll() {
-        List<Job> allJobs = this.service.all();
+    public ResponseEntity<List<Job>> getAll(@RequestParam(required = false) Boolean assigned) {
+        List<Job> allJobs = assigned == null ? this.service.all() : this.service.getJobsAssigned(assigned);
         return new ResponseEntity<>(allJobs, HttpStatus.OK);
     }
 

@@ -33,6 +33,7 @@ public class JobService {
 
     public Job create(JobCreateDTO data) {
         String cleanedName = data.name.trim();
+
         Job newJob = new Job(cleanedName, data.startDate, data.endDate, data.temp);
         return this.repository.save(newJob);
     }
@@ -58,7 +59,9 @@ public class JobService {
         }
 
         return this.repository.save(job);
-
     }
 
+    public List<Job> getJobsAssigned(Boolean assigned) {
+        return assigned ? repository.findAllByTempIsNotNull() : repository.findAllByTempIsNull();
+    }
 }

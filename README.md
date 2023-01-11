@@ -8,25 +8,26 @@
 
 ## Table of Contents <!-- omit in toc -->
 
--   [Introduction](#introduction)
--   [Features (not 100% done)](#features-not-100-done)
--   [Technologies Used](#technologies-used)
--   [Tools Used](#tools-used)
--   [Project Status](#project-status)
--   [Screenshots](#screenshots)
--   [MVP](#mvp)
-    -   [Jobs](#jobs)
-    -   [Temps](#temps)
-    -   [Payloads](#payloads)
-    -   [Assumptions](#assumptions)
--   [Going beyond the MVP](#going-beyond-the-mvp)
--   [Setup](#setup)
--   [Requirements](#requirements)
--   [For launching locally and further development](#for-launching-locally-and-further-development)
--   [Issues discovered during development](#issues-discovered-during-development)
-    -   [Problem 1 - PATCH is not supported](#problem-1---patch-is-not-supported)
-    -   [Problem 2 - PATCH is not updating](#problem-2---patch-is-not-updating)
--   [Room for Improvement](#room-for-improvement)
+- [Introduction](#introduction)
+- [Features (not 100% done)](#features-not-100-done)
+- [Technologies Used](#technologies-used)
+- [Tools Used](#tools-used)
+- [Project Status](#project-status)
+- [Screenshots](#screenshots)
+- [MVP](#mvp)
+	- [Jobs](#jobs)
+	- [Temps](#temps)
+	- [Payloads](#payloads)
+	- [Assumptions](#assumptions)
+- [Going beyond the MVP](#going-beyond-the-mvp)
+- [Setup](#setup)
+- [Requirements](#requirements)
+- [For launching locally and further development](#for-launching-locally-and-further-development)
+- [Issues discovered during development](#issues-discovered-during-development)
+	- [Problem 1 - PATCH is not supported](#problem-1---patch-is-not-supported)
+	- [Problem 2 - PATCH is not updating](#problem-2---patch-is-not-updating)
+- [Draft Notes](#draft-notes)
+- [Room for Improvement](#room-for-improvement)
 
 ## Introduction
 
@@ -42,7 +43,7 @@ An API where consumers can create, update or fetch jobs and temporary workers (t
 ## Technologies Used
 
 -   Java 17 and Maven Project
--   Spring Boot 3.0.0
+-   Spring Boot 3.0.1
     -   Spring Web - build web, including RESTful, applications using Spring MVC
     -   Spring Boot DevTools - provides fast application restarts, LiveReload, and configurations for enhanced development experience
     -   Spring Data JPA - Persist data in SQL stores with Java Persistence API using Spring Data and Hibernate
@@ -74,7 +75,7 @@ Project is ongoing
 | ------ | ----------------------------- | --------------------------------------------------------- | --------------------------- | --------- |
 | GET    | jobs                          | Fetch all jobs                                            | ✅                          |           |
 | GET    | jobs/`{id}`                   | Fetch job by `{id}`                                       | ✅                          |           |
-| GET    | jobs?assigned=`{true\|false}` | Filter jobs by whether a job is assigned to a temp or not |                             |           |
+| GET    | jobs?assigned=`{true\|false}` | Filter jobs by whether a job is assigned to a temp or not | ✅                          |           |
 | POST   | jobs                          | Create new job                                            | ✅                          |           |
 | PATCH  | jobs/ `{id}`                  | Update job by `{id}`, e.g. assigning a temp to a job      | ✅                          |           |
 
@@ -82,11 +83,12 @@ Project is ongoing
 
 | Method | URL                   | Action                                                                | Created & works on Postman? | E2E Test? |
 | ------ | --------------------- | --------------------------------------------------------------------- | --------------------------- | --------- |
-| GET    | temps                 | Fetch all temps                                                       |                             |           |
-| GET    | temps/`{id}`          | Fetch temp by `{id}`                                                  |                             |           |
+| GET    | temps                 | Fetch all temps                                                       | ✅                          |           |
+| GET    | temps/`{id}`          | Fetch temp by `{id}`                                                  | ✅                          |           |
 | GET    | temps/tree            | Fetch whole tree of temps                                             |                             |           |
-| GET    | temps?jobID=`{jobId}` | Fetch temps that are available for a job based on the jobs date range |                             |           |
-| POST   | temps                 | Create new job                                                        |                             |           |
+| GET    | temps?jobId=`{jobId}` | Fetch temps that are available for a job based on the jobs date range |                             |           |
+| POST   | temps                 | Create new temp                                                       | ✅                          |           |
+| PATCH  | temps                 | Update temp by `{id}`, e.g. new name                                  | ✅                          |           |
 
 ### Payloads
 
@@ -172,6 +174,10 @@ Unable to patch a job and console logs/Postman state the method is not supported
 1. Enabled debug mode, noticed JobUpdateDTO and compared file with JobCreateDTO
 2. Realised missing JobUpdateDTO constructor
 3. Added JobUpdateDTO constructor and it is working, considering combining both DTOs into one file
+
+## Draft Notes
+
+-   used Spring Data JPA naming conventions based off https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation e.g. `findAllBy<PropertyName>IsNull()` where `PropertyName` is a field
 
 ## Room for Improvement
 
