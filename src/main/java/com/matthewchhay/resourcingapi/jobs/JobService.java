@@ -9,11 +9,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.matthewchhay.resourcingapi.temps.Temp;
+import com.matthewchhay.resourcingapi.temps.TempService;
+
 @Service
 @Transactional
 public class JobService {
     @Autowired
     private JobRepository repository;
+
+    @Autowired
+    private TempService tempService;
 
     public String hello() {
         return "Hello World from Job";
@@ -32,9 +38,9 @@ public class JobService {
     }
 
     public Job create(JobCreateDTO data) {
+        Temp foundTemp = tempService.findOne(data.temp).get();
         String cleanedName = data.name.trim();
-
-        Job newJob = new Job(cleanedName, data.startDate, data.endDate, data.temp);
+        Job newJob = new Job(cleanedName, data.startDate, data.endDate, foundTemp);
         return this.repository.save(newJob);
     }
 
@@ -55,7 +61,8 @@ public class JobService {
         }
 
         if (data.temp != null) {
-            job.setTemp(data.temp);
+            Temp foundTemp = tempService.findOne(data.temp).get();
+            job.setTemp(foundTemp);
         }
 
         return this.repository.save(job);

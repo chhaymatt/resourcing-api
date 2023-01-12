@@ -1,16 +1,15 @@
 package com.matthewchhay.resourcingapi.jobs;
 
+import com.matthewchhay.resourcingapi.temps.Temp;
 import java.sql.Date;
-//import java.util.List;
-
-//import com.matthewchhay.resourcingapi.temps.Temp;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-//import jakarta.persistence.OneToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Job {
@@ -27,15 +26,14 @@ public class Job {
     @Column
     private Date endDate;
 
-    // @OneToOne(mappedBy = "temp")
-    // List<Temp> temps;
-    @Column
-    private Long temp;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "temp_id")
+    private Temp temp;
 
     public Job() {
     }
 
-    public Job(String name, Date startDate, Date endDate, Long temp) {
+    public Job(String name, Date startDate, Date endDate, Temp temp) {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -70,11 +68,11 @@ public class Job {
         this.endDate = endDate;
     }
 
-    public Long getTemp() {
+    public Temp getTemp() {
         return temp;
     }
 
-    public void setTemp(Long temp) {
+    public void setTemp(Temp temp) {
         this.temp = temp;
     }
 

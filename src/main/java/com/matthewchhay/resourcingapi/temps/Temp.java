@@ -1,17 +1,14 @@
 package com.matthewchhay.resourcingapi.temps;
 
 import java.util.List;
-
-//import java.util.List;
-
-//import com.matthewchhay.resourcingapi.jobs.Job;
-
+import com.matthewchhay.resourcingapi.jobs.Job;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-//import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Temp {
@@ -25,20 +22,16 @@ public class Temp {
     @Column
     String lastName;
 
-    // @OneToMany(mappedBy = "job")
-    // List<Job> jobs;
+    @OneToMany(mappedBy = "temp", fetch = FetchType.LAZY)
+    private List<Job> jobs;
 
     public Temp() {
     }
 
-    public Temp(String firstName, String lastName, List<Long> jobs) {
+    public Temp(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.jobs = jobs;
     }
-
-    @Column
-    private List<Long> jobs;
 
     public Long getId() {
         return this.id;
@@ -64,11 +57,11 @@ public class Temp {
         this.lastName = lastName;
     }
 
-    public List<Long> getJobs() {
+    public List<Job> getJobs() {
         return this.jobs;
     }
 
-    public void setJobs(List<Long> jobs) {
+    public void setJobs(List<Job> jobs) {
         this.jobs = jobs;
     }
 

@@ -23,7 +23,7 @@ public class TempService {
     public Optional<Temp> findOne(Long TempId) {
         Optional<Temp> maybeTemp = this.repository.findById(TempId);
         if (maybeTemp.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no Temp");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no temp");
         }
         return maybeTemp;
     }
@@ -31,7 +31,7 @@ public class TempService {
     public Temp create(TempCreateDTO data) {
         String cleanedFirstName = data.firstName.trim();
         String cleanedLastName = data.lastName.trim();
-        Temp newTemp = new Temp(cleanedFirstName, cleanedLastName, data.jobs);
+        Temp newTemp = new Temp(cleanedFirstName, cleanedLastName);
         return this.repository.save(newTemp);
     }
 
@@ -46,10 +46,6 @@ public class TempService {
         if (data.lastName != null) {
             String cleanedLastName = data.lastName.trim();
             Temp.setLastName(cleanedLastName);
-        }
-
-        if (data.jobs != null) {
-            Temp.setJobs(data.jobs);
         }
 
         return this.repository.save(Temp);
