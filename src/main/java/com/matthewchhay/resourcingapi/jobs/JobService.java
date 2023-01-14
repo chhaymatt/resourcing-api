@@ -2,13 +2,11 @@ package com.matthewchhay.resourcingapi.jobs;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-
 import com.matthewchhay.resourcingapi.temps.Temp;
 import com.matthewchhay.resourcingapi.temps.TempService;
 
@@ -38,9 +36,12 @@ public class JobService {
     }
 
     public Job create(JobCreateDTO data) {
-        Temp foundTemp = tempService.findOne(data.temp).get();
+        Temp temp = null;
+        if (data.temp != null) {
+            temp = tempService.findOne(data.temp).get();
+        }
         String cleanedName = data.name.trim();
-        Job newJob = new Job(cleanedName, data.startDate, data.endDate, foundTemp);
+        Job newJob = new Job(cleanedName, data.startDate, data.endDate, temp);
         return this.repository.save(newJob);
     }
 
