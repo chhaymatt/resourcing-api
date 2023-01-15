@@ -1,6 +1,8 @@
 package com.matthewchhay.resourcingapi.jobs;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.matthewchhay.resourcingapi.temps.Temp;
 import java.sql.Date;
 import jakarta.persistence.Column;
@@ -11,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
 public class Job {
     @Id
@@ -26,9 +29,9 @@ public class Job {
     @Column
     private Date endDate;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "temp")
-    @JsonBackReference
+    // @JsonBackReference
     private Temp temp;
 
     public Job() {
