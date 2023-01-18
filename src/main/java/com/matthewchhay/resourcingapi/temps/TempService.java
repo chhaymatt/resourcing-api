@@ -2,6 +2,7 @@ package com.matthewchhay.resourcingapi.temps;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,15 @@ public class TempService {
     public Temp create(TempCreateDTO data) {
         String cleanedFirstName = data.firstName.trim();
         String cleanedLastName = data.lastName.trim();
-        Temp newTemp = new Temp(cleanedFirstName, cleanedLastName);
+        List<Temp> temps = null;
+
+        // Find each Temp based on temps = [tempId_1, tempId_2, ...]
+        if (data.temps != null) {
+            temps = data.temps.stream().map(tempId -> this.findOne(tempId).get()).collect(Collectors.toList());
+        }
+
+        Temp newTemp = new Temp(cleanedFirstName, cleanedLastName, temps);
+
         return this.repository.save(newTemp);
     }
 
@@ -46,6 +55,18 @@ public class TempService {
         if (data.lastName != null) {
             String cleanedLastName = data.lastName.trim();
             Temp.setLastName(cleanedLastName);
+        }
+
+        if (data.temps != null) {
+            Temp.setTemps(data.temps.stream().map(tempId -> this.findOne(tempId).get()).collect(Collectors.toList()));
+        }
+
+        // Throw error if temp id equals the one from the payload
+        for (Long tempId : data.temps) {
+            if (tempId == Temp.getId()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "Cannot assign temp id to itself");
+            }
         }
 
         return this.repository.save(Temp);

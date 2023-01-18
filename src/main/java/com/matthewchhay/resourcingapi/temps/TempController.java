@@ -33,6 +33,12 @@ public class TempController {
         return new ResponseEntity<>(foundTemp, HttpStatus.OK);
     }
 
+    @GetMapping("/tree")
+    public ResponseEntity<List<Temp>> getTree() {
+        List<Temp> allTemps = this.service.all();
+        return new ResponseEntity<>(allTemps, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<Temp> createTemp(@Valid @RequestBody TempCreateDTO data) {
         Temp createdTemp = this.service.create(data);
@@ -45,4 +51,5 @@ public class TempController {
         Temp updatedTemp = this.service.update(id, data);
         return ResponseEntity.ok(updatedTemp);
     }
+
 }

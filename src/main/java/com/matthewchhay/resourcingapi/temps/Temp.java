@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 
 @Entity
@@ -26,12 +27,17 @@ public class Temp {
     @JsonIgnoreProperties(value = { "temp" })
     private List<Job> jobs;
 
+    @ManyToMany
+    @JsonIgnoreProperties(value = { "temps", "jobs" })
+    private List<Temp> temps;
+
     public Temp() {
     }
 
-    public Temp(String firstName, String lastName) {
+    public Temp(String firstName, String lastName, List<Temp> temps) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.temps = temps;
     }
 
     public Long getId() {
@@ -64,6 +70,14 @@ public class Temp {
 
     public void setJobs(List<Job> jobs) {
         this.jobs = jobs;
+    }
+
+    public List<Temp> getTemps() {
+        return this.temps;
+    }
+
+    public void setTemps(List<Temp> temps) {
+        this.temps = temps;
     }
 
 }
