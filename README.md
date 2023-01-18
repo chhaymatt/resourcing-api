@@ -4,7 +4,7 @@
 
 ## Preview <!-- omit in toc -->
 
-![Preview of Matthew Chhay's Resourcing API](https://i.imgur.com/rWMEOmq.png)
+![Preview of Matthew Chhay's Resourcing API](https://i.imgur.com/3Fl9JNU.png)
 
 ## Table of Contents <!-- omit in toc -->
 
