@@ -1,18 +1,15 @@
 package com.matthewchhay.resourcingapi.temps;
 
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.matthewchhay.resourcingapi.jobs.Job;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
 public class Temp {
     @Id
@@ -25,7 +22,8 @@ public class Temp {
     @Column
     String lastName;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "temp")
+    @OneToMany(mappedBy = "temp")
+    @JsonIgnoreProperties(value = { "temp" })
     private List<Job> jobs;
 
     public Temp() {

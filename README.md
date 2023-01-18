@@ -175,7 +175,7 @@ API stops working when using a relational database
 
 1.  Attempt 1: Adding `@JsonManagedReference` and `@JsonBackReference` to the entities with the relational field stops infinite recursion because jobs references temp and temp also references jobs, however the entity with @JsonBackReference will not appear in the payload
 2.  Attempt 2: Adding `@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")` to both entities allows both fields to appear but not ideal because getting all jobs will show all temps and jobs which is not neat
-3.  Sticking with Attempt 1 for now
+3.  Attempt 3: Replaced `@JoinColumn(name = "temp")` with `@JsonIgnoreProperties(value = { "jobs" })` on the job entity and added `@JsonIgnoreProperties(value = { "temp" })` to the temp entity. Issue resolved adopting this annotation/decorator.
 
 ## Room for Improvement
 
