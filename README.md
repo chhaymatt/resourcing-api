@@ -30,7 +30,7 @@
 
 ## Introduction
 
-An API where consumers can create, update or fetch jobs and temporary workers (temps) and temps can be assigned to jobs using Spring Java and MySQL.
+An API where consumers can create, update, and fetch jobs or temporary workers. Built using Spring Boot, Java and MySQL.
 
 ## Features
 
