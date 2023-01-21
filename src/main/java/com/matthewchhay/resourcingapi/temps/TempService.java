@@ -4,9 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.transaction.Transactional;
 
@@ -22,32 +20,31 @@ public class TempService {
 
     public Optional<Temp> findOne(Long TempId) {
         Optional<Temp> maybeTemp = this.repository.findById(TempId);
-        if (maybeTemp.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no temp");
-        }
         return maybeTemp;
     }
 
-    public Temp create(TempCreateDTO data) {
+    public Temp create(TempCreateDTO data, List<Temp> temps) {
         String cleanedFirstName = data.firstName.trim();
         String cleanedLastName = data.lastName.trim();
-        Temp newTemp = new Temp(cleanedFirstName, cleanedLastName);
+        Temp newTemp = new Temp(cleanedFirstName, cleanedLastName, temps);
         return this.repository.save(newTemp);
     }
 
-    public Temp update(Long TempId, TempUpdateDTO data) {
-        Temp Temp = this.findOne(TempId).get();
-
+    public Temp update(Long TempId, TempUpdateDTO data, Temp temp, List<Temp> temps) {
         if (data.firstName != null) {
             String cleanedFirstName = data.firstName.trim();
-            Temp.setFirstName(cleanedFirstName);
+            temp.setFirstName(cleanedFirstName);
         }
 
         if (data.lastName != null) {
             String cleanedLastName = data.lastName.trim();
-            Temp.setLastName(cleanedLastName);
+            temp.setLastName(cleanedLastName);
         }
 
-        return this.repository.save(Temp);
+        if (temps != null) {
+            temp.setTemps(temps);
+        }
+
+        return this.repository.save(temp);
     }
 }

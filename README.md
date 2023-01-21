@@ -123,8 +123,8 @@ Project is ongoing
 
 ## Going beyond the MVP
 
--   [ ] Temps should be able to manage other temps (will require an additional field)
--   [ ] When you request a temp record it should display the reports of that temp
+-   [x] Temps should be able to manage other temps (will require an additional field)
+-   [x] When you request a temp record it should display the reports of that temp
 -   [ ] Should be represented in the database as a nested set
 -   [ ] `GET /temps/tree` - should display the whole tree of temps
 

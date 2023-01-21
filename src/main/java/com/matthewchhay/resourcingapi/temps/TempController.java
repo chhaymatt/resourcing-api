@@ -1,6 +1,8 @@
 package com.matthewchhay.resourcingapi.temps;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.validation.Valid;
 
@@ -29,20 +32,49 @@ public class TempController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Temp> findOneTemp(@PathVariable Long id) {
-        Temp foundTemp = this.service.findOne(id).get();
-        return new ResponseEntity<>(foundTemp, HttpStatus.OK);
+        Optional<Temp> maybeTemp = this.service.findOne(id);
+        if (maybeTemp.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No temp found with id: " + id);
+        }
+        return new ResponseEntity<>(maybeTemp.get(), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<Temp> createTemp(@Valid @RequestBody TempCreateDTO data) {
-        Temp createdTemp = this.service.create(data);
+        List<Temp> temps = findTempList(data.temps);
+        Temp createdTemp = this.service.create(data, temps);
         return new ResponseEntity<>(createdTemp, HttpStatus.CREATED);
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<Temp> updateTemp(@PathVariable Long id,
             @Valid @RequestBody TempUpdateDTO data) {
-        Temp updatedTemp = this.service.update(id, data);
-        return ResponseEntity.ok(updatedTemp);
+
+        Optional<Temp> maybeTemp = this.service.findOne(id);
+        if (maybeTemp.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No temp found with id: " + id);
+        }
+
+        List<Temp> temps = findTempList(data.temps);
+        for (Long tempId : data.temps) {
+            if (tempId == maybeTemp.get().getId()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "Cannot assign temp id to itself");
+            }
+        }
+        Temp updatedTemp = this.service.update(id, data, maybeTemp.get(), temps);
+        return new ResponseEntity<>(updatedTemp, HttpStatus.OK);
     }
+
+    // Find each Temp based on data.temps List<Long> = [tempId_1, tempId_2, ...]
+    // Also set temps to null if array is empty
+    public List<Temp> findTempList(List<Long> temps) {
+        if (temps != null && temps.size() > 0) {
+            return temps.stream().map(tempId -> this.service.findOne(tempId).orElseThrow(
+                    () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No temp found with id: " + tempId)))
+                    .collect(Collectors.toList());
+        }
+        return null;
+    }
+
 }
