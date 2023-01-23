@@ -1,6 +1,8 @@
 package com.matthewchhay.resourcingapi.temps;
 
 import java.util.List;
+import java.util.Set;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.matthewchhay.resourcingapi.jobs.Job;
 import jakarta.persistence.Column;
@@ -29,12 +31,12 @@ public class Temp {
 
     @ManyToMany
     @JsonIgnoreProperties(value = { "temps", "jobs" })
-    private List<Temp> temps;
+    private Set<Temp> temps;
 
     public Temp() {
     }
 
-    public Temp(String firstName, String lastName, List<Temp> temps) {
+    public Temp(String firstName, String lastName, Set<Temp> temps) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.temps = temps;
@@ -72,11 +74,11 @@ public class Temp {
         this.jobs = jobs;
     }
 
-    public List<Temp> getTemps() {
+    public Set<Temp> getTemps() {
         return this.temps;
     }
 
-    public void setTemps(List<Temp> temps) {
+    public void setTemps(Set<Temp> temps) {
         this.temps = temps;
     }
 

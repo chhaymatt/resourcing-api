@@ -2,7 +2,7 @@ package com.matthewchhay.resourcingapi.jobs;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.matthewchhay.resourcingapi.temps.Temp;
-import java.sql.Date;
+import java.util.Date;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

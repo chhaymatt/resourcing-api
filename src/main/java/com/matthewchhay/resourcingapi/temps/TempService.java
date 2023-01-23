@@ -2,6 +2,7 @@ package com.matthewchhay.resourcingapi.temps;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,14 +24,14 @@ public class TempService {
         return maybeTemp;
     }
 
-    public Temp create(TempCreateDTO data, List<Temp> temps) {
+    public Temp create(TempCreateDTO data, Set<Temp> temps) {
         String cleanedFirstName = data.firstName.trim();
         String cleanedLastName = data.lastName.trim();
         Temp newTemp = new Temp(cleanedFirstName, cleanedLastName, temps);
         return this.repository.save(newTemp);
     }
 
-    public Temp update(Long TempId, TempUpdateDTO data, Temp temp, List<Temp> temps) {
+    public Temp update(Long TempId, TempUpdateDTO data, Temp temp, Set<Temp> temps) {
         if (data.firstName != null) {
             String cleanedFirstName = data.firstName.trim();
             temp.setFirstName(cleanedFirstName);

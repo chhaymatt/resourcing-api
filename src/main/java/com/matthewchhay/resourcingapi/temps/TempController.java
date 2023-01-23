@@ -2,6 +2,7 @@ package com.matthewchhay.resourcingapi.temps;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class TempController {
 
     @PostMapping
     public ResponseEntity<Temp> createTemp(@Valid @RequestBody TempCreateDTO data) {
-        List<Temp> temps = findTempList(data.temps);
+        Set<Temp> temps = findTempSet(data.temps);
         Temp createdTemp = this.service.create(data, temps);
         return new ResponseEntity<>(createdTemp, HttpStatus.CREATED);
     }
@@ -55,7 +56,7 @@ public class TempController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No temp found with id: " + id);
         }
 
-        List<Temp> temps = findTempList(data.temps);
+        Set<Temp> temps = findTempSet(data.temps);
         for (Long tempId : data.temps) {
             if (tempId == maybeTemp.get().getId()) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
@@ -67,12 +68,12 @@ public class TempController {
     }
 
     // Find each Temp based on data.temps List<Long> = [tempId_1, tempId_2, ...]
-    // Also set temps to null if array is empty
-    public List<Temp> findTempList(List<Long> temps) {
+    // Also return temps to null if array is empty
+    public Set<Temp> findTempSet(List<Long> temps) {
         if (temps != null && temps.size() > 0) {
             return temps.stream().map(tempId -> this.service.findOne(tempId).orElseThrow(
                     () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No temp found with id: " + tempId)))
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toSet());
         }
         return null;
     }
