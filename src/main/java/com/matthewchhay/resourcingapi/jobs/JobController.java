@@ -1,6 +1,7 @@
 package com.matthewchhay.resourcingapi.jobs;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -90,12 +91,17 @@ public class JobController {
         // Find assigned temp from job otherwise it will be null from POST /jobs
         Temp temp = job.getTemp();
 
-        // Check payload dates since there createdJob may not contain a date
+        // Check payload dates
+        // Case 1. Replace existing startDate and endDate
         checkDates(data.startDate, data.endDate);
+
+        // Case 2. Replace startDate and keep existing endDate
         checkDates(data.startDate, job.getEndDate());
+
+        // Case 3. Replace endDate and keep existing startDate
         checkDates(job.getStartDate(), data.endDate);
 
-        // Store which scenario (TO DO!)
+        // Case 4. No changes - do nothing
 
         // Check assigning temp exists
         if (data.temp != null) {
@@ -106,24 +112,14 @@ public class JobController {
             temp = maybeTemp.get();
         }
 
-        // Check assigned temp's jobs dates (TO DO!)
-        // Retrieve temp jobs
-        List<Job> tempJobs = temp.getJobs(); //
-
-        // Check each job (TO DO!)
-        for (Job existingjob : tempJobs) {
-            // Based on scenario, check if startDate/endDate is within range
-            if (false) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "One or more jobs conflict with assigned temp");
-            }
-        }
+        // TO DO: Check temps existing jobs date ranges does not conflict with this job
 
         Job updatedJob = this.service.update(id, data, job, temp);
         return new ResponseEntity<>(updatedJob, HttpStatus.OK);
     }
 
-    public void checkDates(Date startDate, Date endDate) {
-        if (startDate != null && endDate != null && startDate.after(endDate)) {
+    public void checkDates(LocalDate startDate, LocalDate endDate) {
+        if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Start date must be before end date");
         }
     }

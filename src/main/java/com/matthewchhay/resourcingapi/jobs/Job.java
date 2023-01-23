@@ -2,7 +2,8 @@ package com.matthewchhay.resourcingapi.jobs;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.matthewchhay.resourcingapi.temps.Temp;
-import java.util.Date;
+
+import java.time.LocalDate;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,10 +21,10 @@ public class Job {
     private String name;
 
     @Column
-    private Date startDate;
+    private LocalDate startDate;
 
     @Column
-    private Date endDate;
+    private LocalDate endDate;
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "jobs" })
@@ -32,7 +33,7 @@ public class Job {
     public Job() {
     }
 
-    public Job(String name, Date startDate, Date endDate, Temp temp) {
+    public Job(String name, LocalDate startDate, LocalDate endDate, Temp temp) {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -51,20 +52,20 @@ public class Job {
         this.name = name;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setStartDate(LocalDate startDate2) {
+        this.startDate = startDate2;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setEndDate(LocalDate endDate2) {
+        this.endDate = endDate2;
     }
 
     public Temp getTemp() {
