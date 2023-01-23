@@ -89,28 +89,28 @@ Project is ongoing
 ```json
 // GET /jobs/{id}
 {
-	id: ...,
-	name: ...,
-	startDate: ...,
-	endDate: ...,
-	temp: {
-		id: ...,
-		firstName: ...,
-		lastName: ...,
+	"id": ...,
+	"name": ...,
+	"startDate": ...,
+	"endDate": ...,
+	"temp": {
+		"id": ...,
+		"firstName": ...,
+		"lastName": ...,
 	} // temp can also be null if a temp hasn't been assigned to the job
 }
 
 // GET /temps/{id}
 {
-	id: ...,
-	firstName: ...,
-	lastName: ...,
-	jobs: [{
-		id: ...,
-		name: ...,
-		startDate: ...,
-		endDate: ...,
-	}, ...] // can be empty if temp hasn't been assigned to jobs
+	"id": ...,
+	"firstName": ...,
+	"lastName": ...,
+	"jobs": [{
+		"id": ...,
+		"name": ...,
+		"startDate": ...,
+		"endDate": ...,
+		}, ...] // can be empty if temp hasn't been assigned to jobs
 }
 ```
 
@@ -179,6 +179,9 @@ API stops working when using a relational database
 
 ## Room for Improvement
 
+-   [x] Moved HTTP status from the @Service to the @Controller
+-   [x] A temp cannot assign themselves, e.g. Ashley -> Ashley
+-   [ ] A temp cannot assign themselves through a different temp, e.g. Ashley -> Matt -> Ashley
 -   [ ] Create Factory Seeder for jobs and temps
 -   [ ] Create E2E tests
 -   [ ] Create Github Action to run tests on every commit
