@@ -80,7 +80,7 @@ Project is ongoing
 | GET    | temps                 | Fetch all temps                                                       | ✓                           |
 | GET    | temps/`{id}`          | Fetch temp by `{id}`                                                  | ✓                           |
 | GET    | temps/tree            | Fetch whole tree of temps                                             | ✗                           |
-| GET    | temps?jobId=`{jobId}` | Fetch temps that are available for a job based on the jobs date range | ✗                           |
+| GET    | temps?jobId=`{jobId}` | Fetch temps that are available for a job based on the jobs date range | ✓                           |
 | POST   | temps                 | Create new temp                                                       | ✓                           |
 | PATCH  | temps                 | Update temp by `{id}`, e.g. new name                                  | ✓                           |
 

@@ -1,5 +1,6 @@
 package com.matthewchhay.resourcingapi.temps;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -14,8 +15,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+
+import com.matthewchhay.resourcingapi.jobs.Job;
+import com.matthewchhay.resourcingapi.jobs.JobService;
 
 import jakarta.validation.Valid;
 
@@ -25,10 +30,36 @@ public class TempController {
     @Autowired
     private TempService service;
 
+    @Autowired
+    private JobService jobService;
+
     @GetMapping
-    public ResponseEntity<List<Temp>> getAll() {
-        List<Temp> allTemps = this.service.all();
-        return new ResponseEntity<>(allTemps, HttpStatus.OK);
+    public ResponseEntity<List<Temp>> getTemps(@RequestParam(required = false) Long jobId) {
+        // Find all temps if no job is specified
+        if (jobId == null) {
+            List<Temp> allTemps = this.service.all();
+            return new ResponseEntity<>(allTemps, HttpStatus.OK);
+        }
+
+        // Find job based on id
+        Optional<Job> maybeJob = jobService.findOne(jobId);
+        if (maybeJob.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No job found with id: " + jobId);
+        }
+        Job job = maybeJob.get();
+
+        if (job.getTemp() != null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A temp is already assigned to job" + jobId);
+        }
+
+        LocalDate startDate = job.getStartDate();
+        LocalDate endDate = job.getEndDate();
+
+        List<Temp> allFreeTemps = this.service.all().stream()
+                .filter(temp -> !this.service.isTempJobConflict(temp, startDate, endDate))
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(allFreeTemps, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
