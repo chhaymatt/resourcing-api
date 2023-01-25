@@ -62,14 +62,23 @@ public class JobController {
         // Check assigning temp exists
         if (data.temp != null) {
             Optional<Temp> maybeTemp = tempService.findOne(data.temp);
+
             if (maybeTemp.isEmpty()) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No temp found with id: " + data.temp);
             }
+
             temp = maybeTemp.get();
+
+            if (tempService.isTempJobConflict(temp, data.startDate, data.endDate)) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "Temp has a conflicting job");
+            }
         }
 
         // Check payload dates
-        checkDates(data.startDate, data.endDate);
+        if (data.startDate.isAfter(data.endDate)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Start date must be before end date");
+        }
 
         Job createdJob = this.service.create(data, temp);
         return new ResponseEntity<>(createdJob, HttpStatus.CREATED);
@@ -92,36 +101,40 @@ public class JobController {
         Temp temp = job.getTemp();
 
         // Check payload dates
-        // Case 1. Replace existing startDate and endDate
-        checkDates(data.startDate, data.endDate);
+        LocalDate startDate = job.getStartDate();
+        LocalDate endDate = job.getEndDate();
 
-        // Case 2. Replace startDate and keep existing endDate
-        checkDates(data.startDate, job.getEndDate());
+        if (data.startDate != null) {
+            startDate = data.startDate;
+        }
+        if (data.endDate != null) {
+            endDate = data.endDate;
+        }
 
-        // Case 3. Replace endDate and keep existing startDate
-        checkDates(job.getStartDate(), data.endDate);
-
-        // Case 4. No changes - do nothing
+        if (startDate.isAfter(endDate)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Start date must be before end date");
+        }
 
         // Check assigning temp exists
         if (data.temp != null) {
+
+            // Find temp based on id
             Optional<Temp> maybeTemp = tempService.findOne(data.temp);
             if (maybeTemp.isEmpty()) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No temp found with id: " + data.temp);
             }
+
             temp = maybeTemp.get();
         }
 
-        // TO DO: Check temps existing jobs date ranges does not conflict with this job
+        if (temp != null) {
+            if (tempService.isTempJobConflict(temp, startDate, endDate)) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "Temp has a conflicting job");
+            }
+        }
 
         Job updatedJob = this.service.update(id, data, job, temp);
         return new ResponseEntity<>(updatedJob, HttpStatus.OK);
     }
-
-    public void checkDates(LocalDate startDate, LocalDate endDate) {
-        if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Start date must be before end date");
-        }
-    }
-
 }

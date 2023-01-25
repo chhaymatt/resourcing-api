@@ -116,7 +116,7 @@ Project is ongoing
 
 ### Assumptions
 
--   [ ] Temps can only have one job at a time (can’t be doing 2 jobs on the same date)
+-   [x] Temps can only have one job at a time (can’t be doing 2 jobs on the same date)
 -   [x] Temps can have many jobs, and job can have 1 temp assigned
 -   [x] Should be able to assign existing temps to jobs via `POST /jobs` & `PATCH /jobs/{id}`
 -   [x] Must use a relational database

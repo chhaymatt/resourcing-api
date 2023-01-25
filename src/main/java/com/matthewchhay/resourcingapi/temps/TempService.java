@@ -1,11 +1,14 @@
 package com.matthewchhay.resourcingapi.temps;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.matthewchhay.resourcingapi.jobs.Job;
 
 import jakarta.transaction.Transactional;
 
@@ -48,4 +51,25 @@ public class TempService {
 
         return this.repository.save(temp);
     }
+
+    public boolean isTempJobConflict(Temp temp, LocalDate startDate, LocalDate endDate) {
+        List<Job> tempJobs = temp.getJobs();
+
+        for (Job tempJob : tempJobs) {
+            if (startDate.isBefore(tempJob.getEndDate()) && endDate.isAfter(tempJob.getStartDate())) {
+                return true;
+            }
+            if (startDate.isEqual(tempJob.getStartDate()) || endDate.isEqual(tempJob.getEndDate())) {
+                return true;
+            }
+            if (startDate.isEqual(tempJob.getEndDate()) || endDate.isEqual(tempJob.getStartDate())) {
+                return true;
+            }
+            if (startDate.isBefore(tempJob.getStartDate()) && endDate.isAfter(tempJob.getEndDate())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
